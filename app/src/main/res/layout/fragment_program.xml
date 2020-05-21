@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorMio">
+
+
+    <Button
+        android:id="@+id/Pazartesi"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:background="@drawable/custom_button"
+        android:text="Pzt"
+        app:layout_constraintBottom_toBottomOf="@+id/Sali"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/Sali" />
+
+    <Button
+        android:id="@+id/Sali"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/custom_button"
+        android:text="S"
+        app:layout_constraintBottom_toBottomOf="@+id/Carsamba"
+        app:layout_constraintStart_toEndOf="@+id/Pazartesi"
+        app:layout_constraintTop_toTopOf="@+id/Carsamba" />
+
+    <Button
+        android:id="@+id/Carsamba"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/custom_button"
+        android:text="Ç"
+        app:layout_constraintBottom_toBottomOf="@+id/Cuma"
+        app:layout_constraintStart_toEndOf="@+id/Sali"
+        app:layout_constraintTop_toTopOf="@+id/Cuma" />
+
+    <Button
+        android:id="@+id/Cuma"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="14dp"
+        android:background="@drawable/custom_button"
+        android:text="@string/Cuma"
+        app:layout_constraintStart_toEndOf="@+id/Persembe"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/Persembe"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:background="@drawable/custom_button"
+        android:text="@string/Perşembe"
+        app:layout_constraintBottom_toBottomOf="@+id/Cuma"
+        app:layout_constraintStart_toEndOf="@+id/Carsamba"
+        app:layout_constraintTop_toTopOf="@+id/Cuma" />
+
+    <Button
+        android:id="@+id/Cumartesi"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="8dp"
+        android:background="@drawable/custom_button"
+        android:text="Cm"
+        app:layout_constraintEnd_toStartOf="@+id/Pazar"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/Pazar"
+        android:layout_width="40dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="12dp"
+        android:background="@drawable/custom_button"
+        android:text="Pz"
+        app:layout_constraintBottom_toBottomOf="@+id/Cumartesi"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/Cumartesi" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_programs"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginBottom="32dp"
+        android:background="@color/colorMio"
+        app:layout_constraintBottom_toTopOf="@+id/btn_addprog"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/Persembe" />
+
+    <Button
+        android:id="@+id/btn_addprog"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/custom_button"
+        android:text="@string/add_program"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/btn_progsave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/custom_button"
+        android:text="@string/save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

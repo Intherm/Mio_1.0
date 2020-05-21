@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_home">
+
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.intherm.miofragments.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_program"
+        android:name="com.intherm.miofragments.ui.program.ProgramFragment"
+        android:label="@string/menu_program"
+        tools:layout="@layout/fragment_program" />
+
+    <fragment
+        android:id="@+id/nav_users"
+        android:name="com.intherm.miofragments.ui.users.UsersFragment"
+        android:label="@string/Users"
+        tools:layout="@layout/fragment_users" />
+
+    <fragment
+        android:id="@+id/nav_notifications"
+        android:name="com.intherm.miofragments.ui.notifications.NotificationsFragment"
+        android:label="Bildirimler"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/nav_devices"
+        android:name="com.intherm.miofragments.ui.devices.DevicesFragment"
+        android:label="Cihazlar"
+        tools:layout="@layout/fragment_devicesettings" />
+
+    <fragment
+        android:id="@+id/nav_devicesettings"
+        android:name="com.intherm.miofragments.ui.devicesettings.DevicesettingsFragment"
+        android:label="Cihaz Ayarları"
+        tools:layout="@layout/fragment_devices" />
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="com.intherm.miofragments.ui.logout.LogoutFragment"
+        android:label="@string/logout"
+        tools:layout="@layout/fragment_logout" />
+
+
+</navigation>

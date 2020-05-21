@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#48AEC3</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#C51162</color>
+    <color name="colorMio">#00B6D0</color>
+    <color name="colorMiotrans">#7000B6D0</color>
+    <color name="colorFacebook">#3A559F</color>
+    <color name="editTextColor">#9CD6E2</color>
+    <color name="transperentColor">#00000000</color>
+    <color name="mioOffline">#DD4C94</color>
+    <color name="transBlack">#6F000000</color>
+    <color name="transMio">#BF00B6D0</color>
+</resources>

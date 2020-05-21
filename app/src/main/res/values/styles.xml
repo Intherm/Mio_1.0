@@ -1,0 +1,32 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:fontFamily">@font/baloo</item>
+        <item name="fontFamily">@font/baloo</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="NavigationView"  parent="Base.Theme.AppCompat">
+        <item name="android:listDivider">@android:color/black</item>
+        <item name="android:state_selected">false</item>
+        <item name="android:textSize">20sp</item><!-- text size in menu-->
+        <!-- item size in menu-->
+        <item name="android:listPreferredItemHeightSmall">50dp</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/drawer_list_selector</item>
+        <item name="android:colorBackground">@drawable/side_menu_transperent_background</item>
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+
+</resources>

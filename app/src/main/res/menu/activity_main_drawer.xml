@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="none"
+        android:id="@+id/one">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/ic_homepage"
+            android:title="@string/menu_home" />
+    </group>
+    <group android:checkableBehavior="none"
+        android:id="@+id/two">
+        <item
+            android:id="@+id/nav_program"
+            android:icon="@drawable/ic_program"
+            android:title="@string/menu_program" />
+    </group>
+    <group android:checkableBehavior="none"
+        android:id="@+id/three">
+        <item
+            android:id="@+id/nav_users"
+            android:icon="@drawable/ic_users"
+            android:title="@string/users" />
+    </group>
+    <group android:checkableBehavior="none"
+        android:id="@+id/four">
+        <item
+            android:id="@+id/nav_notifications"
+            android:icon="@drawable/ic_notifications"
+            android:title="@string/notifications" />
+    </group>
+    <group android:checkableBehavior="none"
+        android:id="@+id/five">
+        <item
+            android:id="@+id/nav_devices"
+            android:icon="@drawable/ic_devices"
+            android:title="@string/devices" />
+    </group>
+    <group android:checkableBehavior="none"
+        android:id="@+id/six">
+        <item
+            android:id="@+id/nav_devicesettings"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/devicesettings" />
+    </group>
+    <group android:checkableBehavior="none"
+        android:id="@+id/seven">
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/logout" />
+    </group>
+
+</menu>

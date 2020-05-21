@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/id_activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background_online"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/btnminus"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/minus"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <TextView
+        android:id="@+id/tvCurrentTemp"
+        android:layout_width="106dp"
+        android:layout_height="70dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="50dp"
+        android:drawableTop="@drawable/home"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnminus" />
+
+    <TextView
+        android:id="@+id/tvCurrentHum"
+        android:layout_width="106dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="24dp"
+        android:drawableTop="@drawable/humidity"
+        android:textAlignment="center"
+        android:textColor="@android:color/white"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnplus" />
+
+
+    <Button
+        android:id="@+id/btnplus"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/plus"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ProgressBar
+        android:id="@+id/mainProgressBar"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCurrentTemp" />
+
+    <TextView
+        android:id="@+id/tvConnecting"
+        android:layout_width="166dp"
+        android:layout_height="18dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/termostatabaglaniyor"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/mainProgressBar" />
+
+    <ImageView
+        android:id="@+id/ivFlame"
+        android:layout_width="44dp"
+        android:layout_height="42dp"
+        android:layout_marginBottom="170dp"
+        android:tint="@android:color/white"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/flame" />
+
+    <TextView
+        android:id="@+id/targetTemp"
+        android:layout_width="111dp"
+        android:layout_height="62dp"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="30dp"
+        android:inputType="numberDecimal"
+        android:textColor="#FFFFFF"
+        android:textSize="46sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/btnplus"
+        app:layout_constraintHorizontal_bias="0.494"
+        app:layout_constraintStart_toEndOf="@+id/btnminus"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="306dp"
+        android:layout_height="114dp"
+        android:layout_marginTop="70dp"
+        android:visibility="invisible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/miologo" />
+
+    <Button
+        android:id="@+id/sv_program"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="57dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/custom_button"
+        android:fontFamily="@font/abril_fatface"
+        android:text="Program Modu "
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/light"
+        android:layout_width="52dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="5dp"
+        android:background="@drawable/custom_light"
+        app:layout_constraintBottom_toBottomOf="@+id/sv_program"
+        app:layout_constraintStart_toEndOf="@+id/sv_program"
+        app:layout_constraintTop_toTopOf="@+id/sv_program" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

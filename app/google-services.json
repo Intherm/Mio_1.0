@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1032059429338",
+    "firebase_url": "https://wifithermo-f10c0.firebaseio.com",
+    "project_id": "wifithermo-f10c0",
+    "storage_bucket": "wifithermo-f10c0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1032059429338:android:8807d6c51d0c53600720e3",
+        "android_client_info": {
+          "package_name": "com.intherm.miofragments"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1032059429338-6f8225479sa4ss850afr89ooitrpjls7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.intherm.miofragments",
+            "certificate_hash": "7b75dda4cdf97c693e5ff40507fb73311e34100c"
+          }
+        },
+        {
+          "client_id": "1032059429338-nn5ros0u1jl287f5bi69mrf805dqn1p9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBHF33V7zv0NhFcquQCLgInl6EStaUmBB0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1032059429338-nn5ros0u1jl287f5bi69mrf805dqn1p9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
