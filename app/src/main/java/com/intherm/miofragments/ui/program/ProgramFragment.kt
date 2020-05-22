@@ -24,11 +24,13 @@ import kotlinx.coroutines.delay
 import okhttp3.*
 import org.json.JSONArray
 import java.io.IOException
+import java.lang.StrictMath.random
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.concurrent.schedule
+import kotlin.math.roundToInt
 import kotlin.time.ExperimentalTime
 
 
@@ -185,7 +187,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                         Program(
                             1,
                             temp.text.toString().toDouble(),
-                            0,
+                            (0..1000000).random(),
                             updatedProgramTime
                         )
                     )
@@ -193,7 +195,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                         Program(
                             2,
                             temp.text.toString().toDouble(),
-                            0,
+                            (0..1000000).random(),
                             updatedProgramTime
                         )
                     )
@@ -201,7 +203,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                         Program(
                             3,
                             temp.text.toString().toDouble(),
-                            0,
+                            (0..1000000).random(),
                             updatedProgramTime
                         )
                     )
@@ -209,7 +211,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                         Program(
                             4,
                             temp.text.toString().toDouble(),
-                            0,
+                            (0..1000000).random(),
                             updatedProgramTime
                         )
                     )
@@ -217,7 +219,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                         Program(
                             5,
                             temp.text.toString().toDouble(),
-                            0,
+                            (0..1000000).random(),
                             updatedProgramTime
                         )
                     )
@@ -225,7 +227,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                         Program(
                             6,
                             temp.text.toString().toDouble(),
-                            0,
+                            (0..1000000).random(),
                             updatedProgramTime
                         )
                     )
@@ -233,7 +235,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                         Program(
                             7,
                             temp.text.toString().toDouble(),
-                            0,
+                            (0..1000000).random(),
                             updatedProgramTime
                         )
                     )
@@ -249,12 +251,27 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                         .show()
                 }
             } else {
-                if (updatedProgramTime != 0L) {
+                var isCrashing = false
+                val iterator = weeklyList.iterator()
+                while(iterator.hasNext()){
+                    val item = iterator.next()
+                    if (item.typeId == defaultDay && item.programTimeValue == updatedProgramTime){
+                        Toast.makeText(
+                            activity!!,
+                            "Lütfen aynı gün ve saate 1'den fazla program ayarlamayın.",
+                            Toast.LENGTH_LONG
+                        )
+                            .show()
+                        isCrashing = true
+                        break
+                    }
+                }
+                if (updatedProgramTime != 0L && !isCrashing) {
                     weeklyList.add(
                         Program(
                             defaultDay,
                             temp.text.toString().toDouble(),
-                            0,
+                            (0..1000000).random(),
                             updatedProgramTime
                         )
                     )
@@ -301,7 +318,6 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                 }
             }
         }
-        weeklyList
         switched.clear()
         if (typeID == 1) {
             for (i in weeklyList) {
@@ -316,6 +332,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                     )
                 }
             }
+            switched.sortBy { it.programTimeValue }
             adapter = MainAdapter(activity!!, switched, this)
             recyclerView_programs.adapter = MainAdapter(activity!!, switched, this)
         } else {
@@ -334,6 +351,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                     )
                 }
             }
+            switched.sortBy { it.programTimeValue }
             recyclerView_programs.adapter = MainAdapter(activity!!, switched, this)
         } else {
             Sali.isEnabled = true
@@ -351,6 +369,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                     )
                 }
             }
+            switched.sortBy { it.programTimeValue }
             recyclerView_programs.adapter = MainAdapter(activity!!, switched, this)
         } else {
             Carsamba.isEnabled = true
@@ -368,6 +387,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                     )
                 }
             }
+            switched.sortBy { it.programTimeValue }
             recyclerView_programs.adapter = MainAdapter(activity!!, switched, this)
         } else {
             Persembe.isEnabled = true
@@ -385,6 +405,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                     )
                 }
             }
+            switched.sortBy { it.programTimeValue }
             recyclerView_programs.adapter = MainAdapter(activity!!, switched, this)
         } else {
             Cuma.isEnabled = true
@@ -400,9 +421,10 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                             i.programTimeValue
                         )
                     )
-                    recyclerView_programs.adapter = MainAdapter(activity!!, switched, this)
                 }
             }
+            switched.sortBy { it.programTimeValue }
+            recyclerView_programs.adapter = MainAdapter(activity!!, switched, this)
         } else {
             Cumartesi.isEnabled = true
         }
@@ -419,6 +441,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                     )
                 }
             }
+            switched.sortBy { it.programTimeValue }
             recyclerView_programs.adapter = MainAdapter(activity!!, switched, this)
         } else {
             Pazar.isEnabled = true
@@ -481,7 +504,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                     } else {
                         println("empty body!!!")
                     }
-                }else{
+                } else {
                     unableToConnect()
                 }
             }
@@ -586,7 +609,7 @@ class ProgramFragment : Fragment(), MainAdapter.EventListener {
                     if (code == 200) {
                         btn_progsave.isEnabled = true
                         btn_addprog.isEnabled = true
-                    }else{
+                    } else {
                         unableToConnect()
                     }
                 }
