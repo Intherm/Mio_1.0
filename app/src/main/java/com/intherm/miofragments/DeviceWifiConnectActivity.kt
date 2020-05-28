@@ -11,11 +11,14 @@ import android.net.wifi.WifiManager
 import android.os.AsyncTask
 import android.os.Build
 import android.os.Bundle
+import android.text.method.HideReturnsTransformationMethod
 import android.util.Log
+import android.view.MotionEvent
 import android.view.View
-import android.widget.*
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
 import androidx.core.location.LocationManagerCompat
 import com.espressif.iot.esptouch.EsptouchTask
 import com.espressif.iot.esptouch.IEsptouchListener
@@ -26,6 +29,7 @@ import com.espressif.iot.esptouch.util.TouchNetUtil
 import kotlinx.android.synthetic.main.activity_device_wifi_connect.*
 import java.lang.ref.WeakReference
 import java.util.*
+import android.text.method.PasswordTransformationMethod as PasswordTransformationMethod
 
 
 class DeviceWifiConnectActivity : AppCompatActivity(), View.OnClickListener {
@@ -51,7 +55,27 @@ class DeviceWifiConnectActivity : AppCompatActivity(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_device_wifi_connect)
 
+        //actionbar
+        val actionbar = supportActionBar
+        //set actionbar title
+        actionbar!!.title = getString(R.string.back)
+        //set back button
+        actionbar.setDisplayHomeAsUpEnabled(true)
 
+        etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+
+        etPassword.setOnTouchListener { v, event ->
+            when (event?.action) {
+                MotionEvent.ACTION_DOWN ->
+                    if (etPassword.transformationMethod == PasswordTransformationMethod.getInstance()) {
+                        etPassword.transformationMethod =
+                            HideReturnsTransformationMethod.getInstance()
+                    } else {
+                        etPassword.transformationMethod = PasswordTransformationMethod.getInstance()
+                    }
+            }
+            v.onTouchEvent(event)
+        }
 
         btnSend.setOnClickListener(this)
 
@@ -68,6 +92,11 @@ class DeviceWifiConnectActivity : AppCompatActivity(), View.OnClickListener {
         } else {
             registerBroadcastReceiver()
         }
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
     }
 
     override fun onRequestPermissionsResult(
@@ -107,39 +136,46 @@ class DeviceWifiConnectActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private fun onWifiChanged(info: WifiInfo?) {
-        val disconnected = info == null || info.networkId == -1 || "<unknown ssid>" == info.ssid
-        if (disconnected) {
-            tvCurrentSSID.text = ""
-            tvCurrentSSID.tag = null
-            tvCurrentBSSID.text = ""
-            tvWifiError.setText(R.string.no_wifi_connection)
-            btnSend.isEnabled = false
-            if (isSDKAtLeastP) {
-                checkLocation()
-            }
-            if (mTask != null) {
-                mTask?.cancelEsptouch()
-                mTask = null
-                AlertDialog.Builder(this)
-                    .setMessage(R.string.configure_wifi_change_message)
-                    .setNegativeButton(android.R.string.cancel, null)
-                    .show()
-            }
+        //If requested permission isn't Granted yet
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //Request permission from user
+            val permissions = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.ACCESS_WIFI_STATE)
+            ActivityCompat.requestPermissions(this, permissions, 0)
         } else {
-            var ssid = info?.ssid
-            if (ssid!!.startsWith("\"") && ssid.endsWith("\"")) {
-                ssid = ssid?.substring(1, ssid.length - 1)
-            }
-            tvCurrentSSID.text = ssid+" "
-            tvCurrentSSID.tag = ByteUtil.getBytesByString(ssid)
-            val ssidOriginalData = TouchNetUtil.getOriginalSsidBytes(info)
-            tvCurrentSSID.tag = ssidOriginalData
-            val bssid = info?.bssid
-            tvCurrentBSSID.text = bssid
-            btnSend.isEnabled = true
-            tvWifiError.text = ""
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                val frequency = info?.frequency
+            val disconnected = info == null || info.networkId == -1 || "<unknown ssid>" == info.ssid
+            if (disconnected) {
+                tvCurrentSSID.text = ""
+                tvCurrentSSID.tag = null
+                tvCurrentBSSID.text = ""
+                tvWifiError.setText(R.string.no_wifi_connection)
+                btnSend.isEnabled = false
+                if (isSDKAtLeastP) {
+                    checkLocation()
+                }
+                if (mTask != null) {
+                    mTask?.cancelEsptouch()
+                    mTask = null
+                    AlertDialog.Builder(this)
+                        .setMessage(R.string.configure_wifi_change_message)
+                        .setNegativeButton(android.R.string.cancel, null)
+                        .show()
+                }
+            } else {
+                var ssid = info?.ssid
+                if (ssid!!.startsWith("\"") && ssid.endsWith("\"")) {
+                    ssid = ssid?.substring(1, ssid.length - 1)
+                }
+                tvCurrentSSID.text = ssid + " "
+                tvCurrentSSID.tag = ByteUtil.getBytesByString(ssid)
+                val ssidOriginalData = TouchNetUtil.getOriginalSsidBytes(info)
+                tvCurrentSSID.tag = ssidOriginalData
+                val bssid = info?.bssid
+                tvCurrentBSSID.text = bssid
+                btnSend.isEnabled = true
+                tvWifiError.text = ""
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    val frequency = info?.frequency
+                }
             }
         }
     }
@@ -285,8 +321,8 @@ class DeviceWifiConnectActivity : AppCompatActivity(), View.OnClickListener {
             mResultDialog = AlertDialog.Builder(activity!!)
                 .setTitle(R.string.configure_result_success)
                 .setItems(resultMsgList.toArray(items), null)
-                .setPositiveButton(R.string.okay){ dialog, which ->
-                    intent = Intent(this@DeviceWifiConnectActivity, MainActivity::class.java)
+                .setPositiveButton(R.string.okay) { dialog, which ->
+                    val intent = Intent(this@DeviceWifiConnectActivity, MainActivity::class.java)
                     startActivity(intent)
                     finish()
                 }

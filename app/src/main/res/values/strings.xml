@@ -78,4 +78,8 @@
     <string name="invalidEmail">Lütfen geçerli bir mail adresi giriniz.</string>
     <string name="userOrPassWrong">Şifre ya da kullanıcı adı hatalı.</string>
     <string name="unableToConnect">Sunucu bağlantısı kurulamadı!, Lütfen internete bağlandıktan sonra uygulamayı başlatın. Sorun devam ederse üreticiniz ile iletişime geçiniz.</string>
+    <string name="back">Geri</string>
+    <string name="title_activity_add_device">AddDeviceActivity</string>
+    <string name="title_activity_thermo_name_first_use">ThermoNameFirstUseActivity</string>
+    <string name="title_activity_invite_code">InviteCodeActivity</string>
 </resources>

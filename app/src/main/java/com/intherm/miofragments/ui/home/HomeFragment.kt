@@ -8,7 +8,6 @@ import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.os.Handler
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -37,7 +36,7 @@ class HomeFragment : Fragment() {
     var timer = 6 //TIMER STARTING VALUE
     var deviceList = ArrayList<Devices>() //ARRAY LIST FOR REGISTERED DEVICES(THERMOSTATS)
     var progMode = false //PROGRAM MODE INIT
-    var code: Int = 200
+    var code: Int = 200 //http code
 
 
     //RUNNABLES
@@ -47,7 +46,7 @@ class HomeFragment : Fragment() {
         @RequiresApi(Build.VERSION_CODES.N)
         override fun run() {
             if (!thermostat.isWorking) {
-                CheckThermo()
+                checkThermo()
                 progHandlerStop()
                 thermoHandler.postDelayed(this, 2000)
             }
@@ -153,10 +152,14 @@ class HomeFragment : Fragment() {
         super.onPause()
         //SAVE VARIABLES ON PAUSE
         val sharedPrefMainPage = activity!!.getSharedPreferences("values", Activity.MODE_PRIVATE)
+        val sharedPrefDevice = activity!!.getSharedPreferences("device", Activity.MODE_PRIVATE)
         val editor = sharedPrefMainPage.edit()
         editor.putString("tempreq", thermostat.targetTemp.toString()).apply()
         editor.putString("humidity", thermostat.currentHum.toString()).apply()
         editor.putString("currenttemp", thermostat.currentTemp.toString()).apply()
+        if (sharedPrefDevice.getInt("selected device id", 0) == 0){
+            sharedPrefDevice.edit().putInt("selected device id", user.thermoId).apply()
+        }
         thermoHandlerStop()
         progHandlerStop()
     }
@@ -167,6 +170,10 @@ class HomeFragment : Fragment() {
         val sharedPrefMainPage =
             activity!!.getSharedPreferences("values", Activity.MODE_PRIVATE)
         val sharedPrefProg = activity!!.getSharedPreferences("prog", Activity.MODE_PRIVATE)
+        val sharedPrefDevice = activity!!.getSharedPreferences("device", Activity.MODE_PRIVATE)
+        if (sharedPrefDevice.getString("selected device name", "") != ""){
+            user.thermoName = sharedPrefDevice.getString("selected device name", "")!!
+        }
         progMode = sharedPrefProg.getBoolean("progmode", false)
         targetTemp.text = sharedPrefMainPage.getString("tempreq", "")
         tvCurrentTemp.text = sharedPrefMainPage.getString("currenttemp", "")
@@ -183,10 +190,13 @@ class HomeFragment : Fragment() {
 
     //1ST CHECK OF SELECTED THERMOSTAT
     @RequiresApi(Build.VERSION_CODES.N)
-    fun CheckThermo() {
+    fun checkThermo() {
         val sharedPrefDevice = activity!!.getSharedPreferences("device", Activity.MODE_PRIVATE)
         val removedDeviceId = sharedPrefDevice.getInt("removed device", 0)
-        val selectedDeviceId = sharedPrefDevice.getInt("selected device id", 0)
+        var selectedDeviceId = sharedPrefDevice.getInt("selected device id", 0)
+        if (selectedDeviceId == 0 && user.thermoId != 0){
+            selectedDeviceId = user.thermoId
+        }
         if (removedDeviceId == selectedDeviceId) {
             val sharedPrefUser = activity!!.getSharedPreferences("user info", Activity.MODE_PRIVATE)
             user.thermoId = sharedPrefUser.getInt("thermo id", 0)
@@ -288,6 +298,8 @@ class HomeFragment : Fragment() {
                 println("user.thermoId ya da user.userId boş geldi.")
             }
         }
+        val sharedPrefUser = activity!!.getSharedPreferences("user info", Activity.MODE_PRIVATE)
+        sharedPrefUser.edit().putBoolean("isOwner", thermostat.isOwner).apply()
     }
 
     private fun progHandlerStop() {
@@ -495,13 +507,27 @@ class HomeFragment : Fragment() {
 
 
 
+                        if(user.thermoName == "" && deviceList.isNotEmpty()){
+                            val editor = sharedPrefUser.edit()
+                            for (d in deviceList){
+                                user.thermoName = d.thermoName
+                                user.thermoId = d.thermoId
+                                editor.putInt("selected device id", d.thermoId).apply()
+                                editor.putString("selected device name", d.thermoName).apply()
+                                break
+                            }
+                            Timer("SettingUp", false).schedule(200) {
+                                activity!!.runOnUiThread {
+                                    (activity as MainActivity).supportActionBar!!.title = user.thermoName
+                                }
+                            }
+
+                        }
                         if (deviceList.isEmpty()) {
                             val intent = Intent(activity, ThermoNameActivity::class.java)
                             activity!!.startActivity(intent)
                             activity!!.finish()
                         }
-                    } else {
-
                     }
                 }
             })
@@ -540,15 +566,10 @@ class HomeFragment : Fragment() {
             } else {
                 Timer("SettingUp", false).schedule(200) {
                     if (selectedDeviceName != "") {
+                        val DeviceName = sharedPrefDevice.getString("selected device name", "").toString()
                         activity!!.runOnUiThread {
-                            if (sharedPrefDevice.getString(
-                                    "selected device name",
-                                    ""
-                                ).toString() != ""
-                            ) {
-                                (activity as MainActivity).supportActionBar!!.title =
-                                    sharedPrefDevice.getString("selected device name", "")
-                                        .toString()
+                            if (DeviceName != "") {
+                                (activity as MainActivity).supportActionBar!!.title = sharedPrefDevice.getString("selected device name", "").toString()
                             }
                         }
                     } else {

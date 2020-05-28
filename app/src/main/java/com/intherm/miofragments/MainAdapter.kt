@@ -243,7 +243,7 @@ class UserViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
 
 }
 
-class DeviceAdaper(
+class DeviceAdapter(
     con: Context,
     private val deviceFeed: ArrayList<DeviceListItems>,
     private val listener: EventListener
@@ -256,10 +256,12 @@ class DeviceAdaper(
     var selectedPosition = -1
     val sharedPrefDevice =
         this.context.getSharedPreferences("device", android.content.Context.MODE_PRIVATE)
+    val sharedPrefUser = this.context.getSharedPreferences("user info", Context.MODE_PRIVATE)
     var pos = -1
 
     interface EventListener {
         fun onDelete()
+        fun onClick()
     }
 
     //number of items
@@ -281,12 +283,20 @@ class DeviceAdaper(
 
         pos = sharedPrefDevice.getInt("selected device position", -1)
 
+        val devId = sharedPrefDevice.getInt("selected device id", 0)
+
         if (pos > -1){
             holder.view.id_device_card.isChecked = pos == position
         }
-
         holder.view.id_device_name.text = deviceFeedItem.name
         holder.view.tv_device_id.text = deviceFeedItem.device_id.toString()
+        holder.view.id_device_card.isChecked = holder.view.tv_device_id.text == devId.toString()
+        if (deviceFeedItem.isOwner == 2){
+            holder.view.device_delete.visibility = View.VISIBLE
+        }else{
+            holder.view.device_delete.visibility = View.INVISIBLE
+        }
+
 
         holder.view.device_delete.setOnClickListener {
             val builder = AlertDialog.Builder(context)
@@ -319,6 +329,7 @@ class DeviceAdaper(
         editor.putInt("selected device position", selectedPosition).apply()
         notifyDataSetChanged()
         Toast.makeText(context,"Aftif cihaz: " + deviceName, Toast.LENGTH_LONG).show()
+        listener.onClick()
     }
 }
 

@@ -10,12 +10,13 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.GsonBuilder
 import com.intherm.miofragments.*
+import com.intherm.miofragments.ui.home.HomeFragment
 import kotlinx.android.synthetic.main.fragment_devices.*
 import okhttp3.*
 import org.json.JSONArray
 import java.io.IOException
 
-class DevicesFragment : Fragment(), DeviceAdaper.EventListener {
+class DevicesFragment : Fragment(), DeviceAdapter.EventListener {
 
     var host = "http://109.228.229.36:8080/termoServlet"
     val deviceList = ArrayList<DeviceListItems>()
@@ -37,6 +38,7 @@ class DevicesFragment : Fragment(), DeviceAdaper.EventListener {
         val sharedPrefUser =
             activity!!.getSharedPreferences("user info", Activity.MODE_PRIVATE)
         user.userId = sharedPrefUser.getInt("user id", 0)
+        user.thermoId = sharedPrefUser.getInt("thermo id", 0)
         devicesJson()
         btn_add.setOnClickListener {
             addDevice()
@@ -82,14 +84,15 @@ class DevicesFragment : Fragment(), DeviceAdaper.EventListener {
                                 deviceList.add(
                                     DeviceListItems(
                                         jsonArray.getJSONObject(jsonIndex).getString("name").toString(),
-                                        jsonArray.getJSONObject(jsonIndex).getString("thermoId").toInt()
+                                        jsonArray.getJSONObject(jsonIndex).getString("thermoId").toInt(),
+                                        jsonArray.getJSONObject(jsonIndex).getInt("isOwner")
                                     )
                                 )
                             }
 
                             activity!!.runOnUiThread {
                                 recyclerView_devices.adapter =
-                                    DeviceAdaper(activity!!, deviceList, this@DevicesFragment)
+                                    DeviceAdapter(activity!!, deviceList, this@DevicesFragment)
                             }
                         }
                     }else{
@@ -162,6 +165,11 @@ class DevicesFragment : Fragment(), DeviceAdaper.EventListener {
         removeDevice()
     }
 
+    override fun onClick() {
+        val intent = Intent(activity, MainActivity::class.java)
+        activity!!.startActivity(intent)
+    }
+
 }
 
-class DeviceListItems(val name: String, val device_id: Int)
+class DeviceListItems(val name: String, val device_id: Int, val isOwner: Int)

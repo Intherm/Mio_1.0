@@ -119,13 +119,13 @@ class LoginActivity : AppCompatActivity() {
                             for (i in 0..thermoListJson.length() - 1) {
                                 editor2.putInt(
                                     "is owner", thermoListJson.getJSONObject(i).getInt("isOwner")
-                                )
+                                ).apply()
                                 editor2.putInt(
                                     "thermo id", thermoListJson.getJSONObject(i).getInt("thermoId")
-                                )
+                                ).apply()
                                 editor2.putString(
                                     "thermo name", thermoListJson.getJSONObject(i).getString("name")
-                                )
+                                ).apply()
                             }
                             editor2.putInt("user id", jsonObject.getInt("userId")).apply()
                             progressHide()
@@ -201,6 +201,13 @@ class LoginActivity : AppCompatActivity() {
                             editor.putInt("thermo id", t.thermoId).apply()
                         }
                     }
+                    if(user.thermoId == 0){
+                        val editor = sharedPrefUser.edit()
+                        for (t in thermoList){
+                            editor.putInt("thermo id", t.thermoId).apply()
+                            user.thermoId = t.thermoId
+                        }
+                    }
                 }else{
                     unableToConnect()
                 }
@@ -219,7 +226,7 @@ class LoginActivity : AppCompatActivity() {
         user.thermoId = sharedPrefUser.getInt("thermo id", 0)
         //Kullanıcı giriş yapmış fakat hiçbir termostat eklemediyse termostat ekleme ekranına yönlendirilir.
         if (user.isLogged == "full" && user.thermoId == 0) {
-            var intent = Intent(this, ThermoNameActivity::class.java)
+            var intent = Intent(this, ThermoNameFirstUseActivity::class.java)
             startActivity(intent)
             finish()
         }

@@ -3,7 +3,7 @@ package com.intherm.miofragments
 
 class Thermostat{
 
-    var isOwner = false
+    var isOwner = true
     var currentTemp: Double = 0.0
     var isActivated = false
     var thermoId = 0

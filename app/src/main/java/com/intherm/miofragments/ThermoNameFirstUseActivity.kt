@@ -1,25 +1,25 @@
 package com.intherm.miofragments
 
-import android.Manifest
 import android.app.Activity
 import android.app.Dialog
 import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
+import com.google.android.material.snackbar.Snackbar
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_thermo_name.*
+
+import kotlinx.android.synthetic.main.activity_thermo_name_first_use.*
 import okhttp3.*
 import org.json.JSONObject
 import java.io.IOException
 
-class ThermoNameActivity : AppCompatActivity() {
+class ThermoNameFirstUseActivity : AppCompatActivity() {
 
     var host = "http://109.228.229.36:8080/termoServlet"
     var inviteCode = ""
@@ -27,7 +27,7 @@ class ThermoNameActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_thermo_name)
+        setContentView(R.layout.activity_thermo_name_first_use)
         val sharedPrefUser = getSharedPreferences("user info", Context.MODE_PRIVATE)
         val sharedPrefDevice = getSharedPreferences("device", Context.MODE_PRIVATE)
         val editor2 = sharedPrefDevice.edit()
@@ -39,31 +39,14 @@ class ThermoNameActivity : AppCompatActivity() {
         //set back button
         actionbar.setDisplayHomeAsUpEnabled(true)
 
-        //If requested permission isn't Granted yet
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //Request permission from user
-            val permissions = arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_NETWORK_STATE, Manifest.permission.ACCESS_WIFI_STATE)
-            ActivityCompat.requestPermissions(this, permissions, 0)}
-
-        btnHomepage.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-            finish()
+        btn_FirstSignout.setOnClickListener {
+            logOut()
         }
 
-        btn_existing_thermo.setOnClickListener {
+        btn_first_existing_thermo.setOnClickListener {
             showDialog()
         }
 
-        btn_new_thermo.setOnClickListener {
-            val intent = Intent(this, AddDeviceActivity::class.java)
-            startActivity(intent)
-        }
-
-    }
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressed()
-        return true
     }
 
     private fun showDialog() {
@@ -116,11 +99,11 @@ class ThermoNameActivity : AppCompatActivity() {
                     val jsonObject = JSONObject(body)
                     if (body == "{}") {
                         runOnUiThread {
-                            tv_wrongcode.visibility = View.VISIBLE
+                            tv_first_wrongcode.visibility = View.VISIBLE
                         }
                     } else {
                         runOnUiThread {
-                            tv_wrongcode.visibility = View.INVISIBLE
+                            tv_first_wrongcode.visibility = View.INVISIBLE
                         }
                         for (jsonIndex in 0 until jsonObject.length()) {
                             jsonObject.getInt("isOwner")
@@ -132,9 +115,9 @@ class ThermoNameActivity : AppCompatActivity() {
                                 .apply()
 
                         }
-                        val intent = Intent(this@ThermoNameActivity, MainActivity::class.java)
-                        this@ThermoNameActivity.startActivity(intent)
-                        this@ThermoNameActivity.finish()
+                        val intent = Intent(this@ThermoNameFirstUseActivity, MainActivity::class.java)
+                        this@ThermoNameFirstUseActivity.startActivity(intent)
+                        this@ThermoNameFirstUseActivity.finish()
                     }
                 }else{
                     unableToConnect()
@@ -142,7 +125,6 @@ class ThermoNameActivity : AppCompatActivity() {
             }
         })
     }
-
 
     fun unableToConnect() {
         runOnUiThread {
@@ -156,10 +138,17 @@ class ThermoNameActivity : AppCompatActivity() {
             dialog.show()
         }
     }
+
+    private fun logOut() {
+        val sharedPrefUser = getSharedPreferences("user info", Context.MODE_PRIVATE)
+        sharedPrefUser.edit().clear().apply()
+        val sharedPreferencesProgram = getSharedPreferences("program", Context.MODE_PRIVATE)
+        sharedPreferencesProgram.edit().clear().apply()
+        val sharedPrefProg = getSharedPreferences("prog", Context.MODE_PRIVATE)
+        sharedPrefProg.edit().clear().apply()
+        val intent = Intent(this, LoginActivity::class.java)
+        startActivity(intent)
+        finish()
+    }
+
 }
-
-
-
-
-
-
